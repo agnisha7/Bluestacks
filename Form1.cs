@@ -28,7 +28,7 @@ namespace FileDownloader
 
         private void btnDwnload_Click(object sender, EventArgs e)
         {
-            Uri uri = new Uri(tbURL.Text);
+             Uri uri = new Uri(tbURL.Text);
 
             //create downloaded file name file extracting from URL
             string filename = "";
@@ -38,7 +38,7 @@ namespace FileDownloader
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Invalid file");
+                MessageBox.Show("File path is incorrect!");
             }
             using (WebClient wc = new WebClient())
             {
@@ -48,7 +48,14 @@ namespace FileDownloader
                 {
                     //check if file already exists as downloaded file
                     if (!File.Exists(tbDestination.Text + "\\" + filename))
-                        wc.DownloadFileAsync(new System.Uri(tbURL.Text), tbDestination.Text + "\\" + filename);
+                        try
+                        {
+                            wc.DownloadFileAsync(new System.Uri(tbURL.Text), tbDestination.Text + "\\" + filename);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("The URL is incorrect!");
+                        }
                     else
                     {
                         MessageBox.Show("File already exists!");
@@ -57,7 +64,7 @@ namespace FileDownloader
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error while downloading");
+                    MessageBox.Show("Download for file failed. File may be missing at the location.");
                 }
             }
         }
